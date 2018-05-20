@@ -39,6 +39,7 @@ describe('Allocate Stream API', () => {
                 .then(res => {
                     expect(res.status).toEqual(200);
                     expect(res.body.url).toEqual(fakeURL);
+                    expect(res.body.secret).toBeUndefined();
                 });
         });
 
