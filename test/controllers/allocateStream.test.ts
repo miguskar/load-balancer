@@ -28,9 +28,7 @@ describe('Allocate Stream API', () => {
             // mock load balancer to return a url
             mock.mockImplementation(() => {
                 return {
-                    getAvailableServerURL: () => {
-                        return Promise.resolve(fakeURL);
-                    },
+                    getAvailableServerURL: () => Promise.resolve(fakeURL)
                 };
             });
             return req.post('/allocateStream')
@@ -48,9 +46,7 @@ describe('Allocate Stream API', () => {
             // mock load balancer to return a url
             mock.mockImplementation(() => {
                 return {
-                    getAvailableServerURL: () => {
-                        return Promise.reject(fakeError);
-                    },
+                    getAvailableServerURL: () => Promise.reject(fakeError)
                 };
             });
             return req.post('/allocateStream')
