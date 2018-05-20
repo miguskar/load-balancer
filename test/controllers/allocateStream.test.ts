@@ -19,7 +19,8 @@ describe('Allocate Stream API', () => {
                 .set('Accept', 'application/json')
                 .then(res => {
                     expect(res.status).toEqual(400);
-                    expect(res.body.message).toEqual('\'channelId\' is required');
+                    expect(res.body.message).toEqual('Bad request');
+                    expect(res.body.errors).toMatchObject([{ location: 'body', param: 'channelId', msg: 'Invalid value' }]);
                 });
         });
 
