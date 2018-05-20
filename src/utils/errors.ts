@@ -14,7 +14,7 @@ export class HttpError implements Error {
 export class ValidationError extends HttpError {
     errors: {}[];
     constructor(errors: {}[]) {
-        super('Invalid body', 400, 'ValidationError');
+        super('Bad request', 400, 'ValidationError');
         this.errors = errors;
     }
 }
