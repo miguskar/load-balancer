@@ -8,19 +8,19 @@ const router = Router();
 router.use('/allocateStream', allocateStream);
 
 router.use((err: ValidationError, req: Request, res: Response, next: NextFunction) => {
-    // if headers have been sent, let express handle the error
-    if (res.headersSent) {
-        return next(err);
-    }
-    const { message, errors, status } = err;
-    const body: any = { message };
-    if (errors) {
-        body.errors = errors;
-    }
-    if (status) {
-        return res.status(status).json(body);
-    }
-    res.status(500).json(body);
+  // if headers have been sent, let express handle the error
+  if (res.headersSent) {
+    return next(err);
+  }
+  const { message, errors, status } = err;
+  const body: any = { message };
+  if (errors) {
+    body.errors = errors;
+  }
+  if (status) {
+    return res.status(status).json(body);
+  }
+  res.status(500).json(body);
 });
 
 export default router;
