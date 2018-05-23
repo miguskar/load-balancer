@@ -2,32 +2,26 @@ import request from 'request-promise';
 import { HttpError } from '../utils/errors';
 
 export default class LoadBalancer {
-  public static SERVER_URIS = [
-    'case1-1.neti.systems',
-    'case1-2.neti.systems',
-    'case1-3.neti.systems'
-  ];
-  private static nextIndex = 0;
+  private serverUrls: string[];
+  private nextServerIdx: number;
 
-  static reset() {
-    LoadBalancer.nextIndex = 0;
+  constructor(serverUrls: string[]) {
+    this.serverUrls = serverUrls;
+    this.nextServerIdx = 0;
   }
 
-  constructor() {}
-
   async getAvailableServerURL(body: { channelId: string }): Promise<string> {
-    const startIndex = LoadBalancer.nextIndex;
-    const noOfServers = LoadBalancer.SERVER_URIS.length;
-    const endIndex = startIndex + noOfServers;
-    for (let i = startIndex; i < endIndex; ++i) {
-      const serverUrl = LoadBalancer.SERVER_URIS[i % noOfServers];
+    const startIdx = this.nextServerIdx;
+    const noOfServers = this.serverUrls.length;
+    const endIdx = startIdx + noOfServers;
+    for (let i = startIdx; i < endIdx; ++i) {
+      const serverUrl = this.serverUrls[i % noOfServers];
       try {
-        LoadBalancer.nextIndex = (i + 1) % noOfServers;
+        this.nextServerIdx = (i + 1) % noOfServers;
         const { url } = await this.sendRequest(`http://${serverUrl}:3000/allocateStream`, body);
         console.log('setting next index to ', (i + 1) % noOfServers);
         return url;
       } catch (err) {
-        console.log('got error', err);
         // If we ended up here, it means the request either timed out or we got an error
         // When that happens, we should try the next server
       }
