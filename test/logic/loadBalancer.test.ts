@@ -9,6 +9,7 @@ describe('Load balancer', () => {
     expect(lb).toBeDefined();
   });
 
+
   describe('when all servers work', () => {
     lb = new LoadBalancer(FAKE_URLS);
 
@@ -48,12 +49,56 @@ describe('Load balancer', () => {
   describe('when first server breaks', () => {
     beforeAll(() => {
       const url = FAKE_URLS[0];
-      nock(`http://${url}:3000`)
+      nock(`http://${FAKE_URLS[0]}:3000`)
         .post('/allocateStream')
         .reply(500);
+      nock(`http://${FAKE_URLS[1]}:3000`)
+        .post('/allocateStream')
+        .reply(200, { url: FAKE_URLS[1] });
       lb = new LoadBalancer(FAKE_URLS);
     });
 
-    test('it should try the next url', () => {});
+    test('it should try the next url', async () => {
+      const returnedUrl = await lb.getAvailableServerURL({ channelId: 'test' });
+      expect(returnedUrl).toEqual(FAKE_URLS[1]);
+    });
+  });
+
+  describe('when first server is too slow to respond', () => {
+    beforeAll(() => {
+      const url = FAKE_URLS[0];
+      nock(`http://${FAKE_URLS[0]}:3000`)
+        .post('/allocateStream')
+        .delay(1001)
+        .reply(200, { url: FAKE_URLS[0] });
+      nock(`http://${FAKE_URLS[1]}:3000`)
+        .post('/allocateStream')
+        .reply(200, { url: FAKE_URLS[1] });
+      lb = new LoadBalancer(FAKE_URLS);
+    });
+
+    test('it should try the next url', async () => {
+      const returnedUrl = await lb.getAvailableServerURL({ channelId: 'test' });
+      expect(returnedUrl).toEqual(FAKE_URLS[1]);
+    });
+  });
+
+  describe('when all servers break', () => {
+    // Function used for mocking an url
+    const mockUrl = (url) =>
+      nock(`http://${url}:3000`)
+        .post('/allocateStream')
+        .reply(500);
+
+    beforeAll(() => {
+      for (const url of FAKE_URLS) {
+        mockUrl(url);
+      }
+      lb = new LoadBalancer(FAKE_URLS);
+    });
+
+    test('it should throw 500', async () => {
+      await expect(lb.getAvailableServerURL({ channelId: 'test' })).rejects.toThrow('No servers available');
+    });
   });
 });
