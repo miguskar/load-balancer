@@ -5,7 +5,15 @@ import LoadBalancer from '../logic/loadBalancer';
 import { HttpError } from '../utils/errors';
 import { MEDIA_SERVER_URLS } from '../config';
 
+// Create a load balancer that keeps track of what server to call
 const lb = new LoadBalancer(MEDIA_SERVER_URLS);
+
+/**
+ * Returns the next available media server
+ * @param req The request
+ * @param res The response
+ * @param next The next middleware
+ */
 export async function allocate(req: Request, res: Response, next: NextFunction) {
   const body: { channelId: string } = req.body;
   try {

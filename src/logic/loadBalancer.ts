@@ -1,6 +1,9 @@
 import request from 'request-promise';
 import { HttpError } from '../utils/errors';
 
+/**
+ * The Load balancer class uses a round robin strategy to load balance requests to upstream servers
+ */
 export default class LoadBalancer {
   private serverUrls: string[];
   private nextServerIdx: number;
@@ -10,25 +13,33 @@ export default class LoadBalancer {
     this.nextServerIdx = 0;
   }
 
+  /**
+   * Returns the next available media server
+   * @param body The body of a request
+   */
   async getAvailableServerURL(body: { channelId: string }): Promise<string> {
     const startIdx = this.nextServerIdx;
     const noOfServers = this.serverUrls.length;
     const endIdx = startIdx + noOfServers;
     for (let i = startIdx; i < endIdx; ++i) {
       const serverUrl = this.serverUrls[i % noOfServers];
+      this.nextServerIdx = (i + 1) % noOfServers;
       try {
-        this.nextServerIdx = (i + 1) % noOfServers;
         const { url } = await this.sendRequest(`http://${serverUrl}:3000/allocateStream`, body);
-        console.log('setting next index to ', (i + 1) % noOfServers);
         return url;
       } catch (err) {
         // If we ended up here, it means the request either timed out or we got an error
-        // When that happens, we should try the next server
+        // When that happens, we should just try the next server until the for loop ends
       }
     }
     return Promise.reject(new HttpError('No servers available', 500));
   }
 
+  /**
+   * Sends a request to a server to see if we can direct traffic there
+   * @param url The url of the server
+   * @param body The request body
+   */
   private async sendRequest(
     url: string,
     body: { channelId: string }
