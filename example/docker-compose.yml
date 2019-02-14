@@ -5,6 +5,13 @@ services:
     build: ../
     ports: 
       - 3000:3000
+    depends_on:
+      - shitty-server-1
+      - shitty-server-2
+      - shitty-server-3
+    environment:
+      - NODE_ENV=production
+      - SERVERS=localhost:3001;localhost:3002;localhost:3003
   shitty-server-1:
     build: ./
     environment:
