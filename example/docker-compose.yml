@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  load-balancer:
+    build: ../
+    ports: 
+      - 3000:3000
+  shitty-server-1:
+    build: ./
+    environment:
+      - NODE_ENV=production
+    ports: 
+      - 3001:3000
+  shitty-server-2:
+    build: ./
+    environment:
+      - NODE_ENV=production
+    ports: 
+      - 3002:3000
+  shitty-server-3:
+    build: ./
+    environment:
+      - NODE_ENV=production
+    ports: 
+      - 3003:3000
