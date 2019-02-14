@@ -69,8 +69,7 @@ describe('Load balancer', () => {
       const url = FAKE_URLS[0];
       nock(`http://${FAKE_URLS[0]}:3000`)
         .post('/allocateStream')
-        .delay(1001)
-        .reply(200, { url: FAKE_URLS[0] });
+        .replyWithError({ code: 'ETIMEDOUT' });
       nock(`http://${FAKE_URLS[1]}:3000`)
         .post('/allocateStream')
         .reply(200, { url: FAKE_URLS[1] });
