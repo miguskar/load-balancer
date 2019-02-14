@@ -2,8 +2,7 @@ import request, { SuperTest, Test } from 'supertest';
 import nock from 'nock';
 
 import app from '../../src/app';
-import LoadBalancer from '../../src/logic/loadBalancer';
-import { MEDIA_SERVER_URLS } from '../../src/config';
+import { SERVER_URLS } from '../../src/config';
 
 describe('Allocate Stream API', () => {
   describe('POST', () => {
@@ -27,7 +26,7 @@ describe('Allocate Stream API', () => {
     });
 
     describe('when a server works', () => {
-      const firstUrl = MEDIA_SERVER_URLS[0];
+      const firstUrl = SERVER_URLS[0];
       beforeAll(() => {
         nock(`http://${firstUrl}:3000`)
           .post('/allocateStream')
@@ -49,7 +48,7 @@ describe('Allocate Stream API', () => {
 
     describe('when no servers work', () => {
       beforeAll(() => {
-        for (const url of MEDIA_SERVER_URLS) {
+        for (const url of SERVER_URLS) {
           nock(`http://${url}:3000`)
             .post('/allocateStream')
             .reply(500);
