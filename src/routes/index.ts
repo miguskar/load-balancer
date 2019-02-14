@@ -5,6 +5,7 @@ import { defaultErrorHandler } from './defaultErrorHandler';
 const router = Router();
 
 // Specify express routes here
+router.get('/', (req, res, next) => res.send('Hello :)'));
 router.use('/allocateStream', allocateStream);
 
 
