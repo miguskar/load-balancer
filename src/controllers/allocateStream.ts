@@ -3,10 +3,10 @@ import { validationResult } from 'express-validator/check';
 
 import LoadBalancer from '../logic/loadBalancer';
 import { HttpError } from '../utils/errors';
-import { MEDIA_SERVER_URLS } from '../config';
+import { SERVER_URLS } from '../config';
 
 // Create a load balancer that keeps track of what server to call
-const lb = new LoadBalancer(MEDIA_SERVER_URLS);
+const lb = new LoadBalancer(SERVER_URLS);
 
 /**
  * Returns the next available media server
