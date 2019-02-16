@@ -32,7 +32,7 @@ export default class LoadBalancer {
         // When that happens, we should just try the next server until the for loop ends
       }
     }
-    return Promise.reject(new HttpError('No servers available', 500));
+    throw new HttpError('No servers available', 500);
   }
 
   /**

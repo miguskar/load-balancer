@@ -1,10 +1,8 @@
-export class HttpError implements Error {
-  name: string;
-  message: string;
-  stack?: string | undefined;
-  status?: number;
+export class HttpError extends Error implements Error {
+  stack?: string;
 
-  constructor(message: string, status: number = 500, name: string = 'HttpError') {
+  constructor(public message: string, public status: number = 500, public name: string = 'HttpError') {
+    super(message);
     this.name = name;
     this.message = message;
     this.status = status;

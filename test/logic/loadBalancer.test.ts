@@ -1,5 +1,6 @@
 import LoadBalancer from '../../src/logic/loadBalancer';
 import nock from 'nock';
+import { HttpError } from '../../src/utils/errors';
 
 describe('Load balancer', () => {
   const FAKE_URLS = ['test1.example.com', 'test2.example.com'];
@@ -97,7 +98,7 @@ describe('Load balancer', () => {
     });
 
     test('it should throw 500', async () => {
-      await expect(lb.getAvailableServerURL({ channelId: 'test' })).rejects.toThrow('No servers available');
+      await expect(lb.getAvailableServerURL({ channelId: 'test' })).rejects.toThrow(HttpError);
     });
   });
 });
