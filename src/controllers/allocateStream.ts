@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-import { validationResult } from 'express-validator/check';
 
 import LoadBalancer from '../logic/loadBalancer';
 import { HttpError } from '../utils/errors';
