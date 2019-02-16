@@ -25,7 +25,7 @@ describe('Setting server urls', () => {
   describe('from environment variable', () => {
 
     test('should die if no servers are set', () => {
-      const mockExit = jest.spyOn(process, 'exit').mockImplementation((code) => { throw Error('kill process'); });
+      const mockExit = jest.spyOn(process, 'exit').mockImplementation((() => { }) as () => never);
       const error_code = 1;
 
       process.env.NODE_ENV = 'production';
@@ -36,6 +36,7 @@ describe('Setting server urls', () => {
       expect(mockExit).toHaveBeenCalledWith(error_code);
       mockExit.mockRestore();
     });
+
     test('should set single url', () => {
       // set the variables
       process.env.NODE_ENV = 'production';
