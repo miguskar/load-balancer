@@ -1,8 +1,52 @@
 # Readme for load balancer
 
+This load balancer balances requests in a round-robin fashion between available video-servers. The video-servers responds with a secret and an url, to which the client can then connect and obtain a video stream.
+
+A typical response from a video-server can be
+```
+{
+"url": "http://some-url.stream/svt1?token=12345",
+"secret": "abcdef"
+}
+```
+and the load-balancer forwards: 
+```
+{
+"url": "http://some-url.stream/svt1?token=12345"
+}
+```
+If the video-server takes longer than 1 second to respond, or returns a 500, the load balancer tries another video-server instead.
+
+If all the video-servers fails to respond, the load balancer responds with a 500 error.
+
+
+The `example/` folder contains a fake video-server that can be used for development
+
+
 ## Requirements
-Nodejs 8.x (lower may work),
-NPM
+- Docker
+- Docker-compose
+OR 
+- Nodejs 8.x (lower may work),
+- NPM
+
+### With docker
+
+## Watching tests:
+`docker-compose -p tests run -p 30
+00 --rm load-balancer npm run watch-test`
+
+## Serving project for development (using fake servers)
+`docker-compose up`
+
+## Building and running project in a production environment
+```
+cd example
+docker-compose build --no-cache
+docker-compose up
+```
+
+### Without docker
 
 ## Setup
 Run `npm i`
