@@ -30,32 +30,34 @@ OR
 - Nodejs 8.x (lower may work),
 - NPM
 
-### With docker
+## With docker
 
-## Watching tests:
-`docker-compose -p tests run -p 30
-00 --rm load-balancer npm run watch-test`
 
-## Serving project for development (using fake servers)
-`docker-compose up`
-
-## Building and running project in a production environment
+### Building and running project in a production environment
 ```
 cd example
 docker-compose build --no-cache
 docker-compose up
 ```
 
-### Without docker
+### Running tests:
+`docker-compose -p tests run -p 30
+00 --rm load-balancer npm run watch-test`
 
-## Setup
+### Serving project for development (using mock servers)
+`docker-compose up`
+
+
+## Without docker
+
+### Setup
 Run `npm i`
 
-## Building project
+### Building project
 To build the project, run `npm run build`. The build code will end up in a folder called *dist*.
 
-## Running tests
+### Running tests
 To test the code, run `npm run test`. If you want to run test the each time the code changes, run `npm run watch-test`.
 
-## Serving project
+### Serving project
 To serve the project on your local computer, run `npm run serve`.
