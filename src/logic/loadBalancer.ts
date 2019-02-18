@@ -25,6 +25,7 @@ export default class LoadBalancer {
       const serverUrl = this.serverUrls[i % noOfServers];
       this.nextServerIdx = (i + 1) % noOfServers;
       try {
+        console.log('trying server', serverUrl);
         const { url } = await this.sendRequest(`http://${serverUrl}/allocateStream`, body);
         return url;
       } catch (err) {
