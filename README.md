@@ -1,6 +1,6 @@
 # Readme for load balancer
 
-This load balancer balances requests in a round-robin fashion between available video-servers. The video-servers responds with a secret and an url, to which the client can then connect and obtain a video stream.
+This load balancer balances requests in a round-robin fashion between available video-servers. The video-servers responds with a secret and a url, to which the client can then connect and obtain a video stream.
 
 A typical response from a video-server can be
 ```
