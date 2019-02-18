@@ -2,7 +2,7 @@ FROM node:8
 
 WORKDIR /server
 
-COPY . /server
+COPY . .
 RUN npm install
 RUN npm run build
 
