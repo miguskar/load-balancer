@@ -5,7 +5,7 @@ const failRate = .3;
 
 http.createServer((req, res) => {
   let statusCode = 200;
-  let message = { url: 'https://some-channel.stream', secret: crypto.randomBytes(20).toString('hex') };
+  let message = { url: `https://some-channel.stream?token=${crypto.randomBytes(5).toString('hex')}`, secret: crypto.randomBytes(20).toString('hex') };
 
   const shouldThisCallFail = Math.random() < failRate
   if (shouldThisCallFail) {
