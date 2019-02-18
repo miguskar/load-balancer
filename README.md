@@ -26,7 +26,9 @@ The `example/` folder contains a fake video-server that can be used for developm
 ## Requirements
 - Docker
 - Docker-compose
-OR 
+
+OR
+
 - Nodejs 8.x (lower may work),
 - NPM
 
