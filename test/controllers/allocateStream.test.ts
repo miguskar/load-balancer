@@ -28,7 +28,7 @@ describe('Allocate Stream API', () => {
     describe('when a server works', () => {
       const firstUrl = SERVER_URLS[0];
       beforeAll(() => {
-        nock(`http://${firstUrl}:3000`)
+        nock(`http://${firstUrl}`)
           .post('/allocateStream')
           .reply(200, { url: firstUrl });
       });
@@ -49,7 +49,7 @@ describe('Allocate Stream API', () => {
     describe('when no servers work', () => {
       beforeAll(() => {
         for (const url of SERVER_URLS) {
-          nock(`http://${url}:3000`)
+          nock(`http://${url}`)
             .post('/allocateStream')
             .reply(500);
         }

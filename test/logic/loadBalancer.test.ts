@@ -16,7 +16,7 @@ describe('Load balancer', () => {
 
     // Function used for mocking an url
     const mockUrl = (url) =>
-      nock(`http://${url}:3000`)
+      nock(`http://${url}`)
         .post('/allocateStream')
         .reply(200, { url });
 
@@ -50,10 +50,10 @@ describe('Load balancer', () => {
   describe('when first server breaks', () => {
     beforeAll(() => {
       const url = FAKE_URLS[0];
-      nock(`http://${FAKE_URLS[0]}:3000`)
+      nock(`http://${FAKE_URLS[0]}`)
         .post('/allocateStream')
         .reply(500);
-      nock(`http://${FAKE_URLS[1]}:3000`)
+      nock(`http://${FAKE_URLS[1]}`)
         .post('/allocateStream')
         .reply(200, { url: FAKE_URLS[1] });
       lb = new LoadBalancer(FAKE_URLS);
@@ -68,10 +68,10 @@ describe('Load balancer', () => {
   describe('when first server is too slow to respond', () => {
     beforeAll(() => {
       const url = FAKE_URLS[0];
-      nock(`http://${FAKE_URLS[0]}:3000`)
+      nock(`http://${FAKE_URLS[0]}`)
         .post('/allocateStream')
         .replyWithError({ code: 'ETIMEDOUT' });
-      nock(`http://${FAKE_URLS[1]}:3000`)
+      nock(`http://${FAKE_URLS[1]}`)
         .post('/allocateStream')
         .reply(200, { url: FAKE_URLS[1] });
       lb = new LoadBalancer(FAKE_URLS);
@@ -86,7 +86,7 @@ describe('Load balancer', () => {
   describe('when all servers break', () => {
     // Function used for mocking an url
     const mockUrl = (url) =>
-      nock(`http://${url}:3000`)
+      nock(`http://${url}`)
         .post('/allocateStream')
         .reply(500);
 

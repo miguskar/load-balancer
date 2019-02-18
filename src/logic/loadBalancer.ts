@@ -25,7 +25,7 @@ export default class LoadBalancer {
       const serverUrl = this.serverUrls[i % noOfServers];
       this.nextServerIdx = (i + 1) % noOfServers;
       try {
-        const { url } = await this.sendRequest(`http://${serverUrl}:3000/allocateStream`, body);
+        const { url } = await this.sendRequest(`http://${serverUrl}/allocateStream`, body);
         return url;
       } catch (err) {
         // If we ended up here, it means the request either timed out or we got an error
