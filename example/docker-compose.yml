@@ -3,6 +3,7 @@ version: '3'
 services:
   load-balancer:
     build: ../
+    command: npm run start
     ports: 
       - 3000:3000
     depends_on:
@@ -11,7 +12,7 @@ services:
       - shitty-server-3
     environment:
       - NODE_ENV=production
-      - SERVERS=localhost:3001;localhost:3002;localhost:3003
+      - SERVERS=shitty-server-1:3000;shitty-server-2:3000;shitty-server-3:3000
   shitty-server-1:
     build: ./
     environment:
