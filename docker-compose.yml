@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  load-balancer:
+    build: .
+    command: npm run serve
+    volumes:
+      - .:/server
+    ports:
+      - 3000:3000
+    depends_on:
+      - shitty-server-1
+      - shitty-server-2
+      - shitty-server-3
+    environment:
+      - NODE_ENV=development
+      - SERVERS=shitty-server-1:3000;shitty-server-2:3000;shitty-server-3:3000
+  shitty-server-1:
+    build: ./example/
+    environment:
+      - NODE_ENV=production
+    ports: 
+      - 3001:3000
+  shitty-server-2:
+    build: ./example/
+    environment:
+      - NODE_ENV=production
+    ports: 
+      - 3002:3000
+  shitty-server-3:
+    build: ./example/
+    environment:
+      - NODE_ENV=production
+    ports: 
+      - 3003:3000
