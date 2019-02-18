@@ -1,15 +1,16 @@
+const crypto = require('crypto');
 const http = require('http');
 
 const failRate = .3;
 
 http.createServer((req, res) => {
   let statusCode = 200;
-  let message = { status: 'OK!' };
+  let message = { url: 'https://some-channel.stream', secret: crypto.randomBytes(20).toString('hex') };
 
   const shouldThisCallFail = Math.random() < failRate
   if (shouldThisCallFail) {
     statusCode = 500;
-    message = { status: 'An error occurred :(' };
+    message = { message: 'An error occurred :(' };
     return sendResponse(res, statusCode, message);
   }
   const delay = Math.random() * 2000; // somewhere between 0 and 2000ms delay
